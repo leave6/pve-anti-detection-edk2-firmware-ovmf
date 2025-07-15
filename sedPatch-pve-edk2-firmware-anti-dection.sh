@@ -1,7 +1,7 @@
 #!/bin/bash
 #适用于给pve-edk2-firmware里面的edk2打补丁使用，输出ovmf包。直接放本脚本在edk2目录下，在make包之前在edk2目录运行一次本脚本就是，运行后你可以继续使用git工具生成edk2具体版本的patch文件
 #作者 李晓流 & 大大帅666 20240824出品 https://space.bilibili.com/565938745
-brand="Dell" #这里修改品牌，仅4个大写英文字母
+brand="VAIO" #这里修改品牌，仅4个大写英文字母
 echo "开始sed工作"
 sed -i 's/0x20202020324B4445/0x20202020204c5450/g' MdeModulePkg/MdeModulePkg.dec
 sed -i 's/QemuFwCfgAcpiPlatform/'${brand}'FwCfgAcpiPlatform/g' OvmfPkg/AcpiPlatformDxe/AcpiPlatformDxe.inf
@@ -50,4 +50,6 @@ sed -i 's/BASE_NAME                      = BaseQemuFwCfgS3LibNull/BASE_NAME     
 sed -i 's/BASE_NAME                      = DxeQemuFwCfgS3LibFwCfg/BASE_NAME                      = Dxe'${brand}'FwCfgS3LibFwCfg/g' OvmfPkg/Library/QemuFwCfgS3Lib/DxeQemuFwCfgS3LibFwCfg.inf
 sed -i 's/BASE_NAME                      = PeiQemuFwCfgS3LibFwCfg/BASE_NAME                      = Pei'${brand}'FwCfgS3LibFwCfg/g' OvmfPkg/Library/QemuFwCfgS3Lib/PeiQemuFwCfgS3LibFwCfg.inf
 sed -i 's/BASE_NAME                      = GenericQemuLoadImageLib/BASE_NAME                      = Generic'${brand}'LoadImageLib/g' OvmfPkg/Library/GenericQemuLoadImageLib/GenericQemuLoadImageLib.inf
+sed -i 's/0x1234,\(\s*\)0x1111,/0x8086,\10x4692,/;s/0x1234,\(\s*\)0x1111,/0x8086,\10x4692,/;s/L"QEMU Standard VGA"/L"INTEL Standard VGA"/;s/L"QEMU Standard VGA (secondary)"/L"INTEL Standard VGA (secondary)"/' 'OvmfPkg/QemuVideoDxe/Driver.c'
+sed -i 's/L"QEMU Video Driver"/L"INTEL Video Driver"/;s/L"QEMU Video PCI Adapter"/L"INTEL Video PCI Adapter"/' 'OvmfPkg/QemuVideoDxe/ComponentName.c'
 echo "结束sed工作"
