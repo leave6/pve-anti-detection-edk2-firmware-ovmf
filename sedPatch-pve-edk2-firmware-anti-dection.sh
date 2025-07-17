@@ -50,6 +50,9 @@ sed -i 's/BASE_NAME                      = BaseQemuFwCfgS3LibNull/BASE_NAME     
 sed -i 's/BASE_NAME                      = DxeQemuFwCfgS3LibFwCfg/BASE_NAME                      = Dxe'${brand}'FwCfgS3LibFwCfg/g' OvmfPkg/Library/QemuFwCfgS3Lib/DxeQemuFwCfgS3LibFwCfg.inf
 sed -i 's/BASE_NAME                      = PeiQemuFwCfgS3LibFwCfg/BASE_NAME                      = Pei'${brand}'FwCfgS3LibFwCfg/g' OvmfPkg/Library/QemuFwCfgS3Lib/PeiQemuFwCfgS3LibFwCfg.inf
 sed -i 's/BASE_NAME                      = GenericQemuLoadImageLib/BASE_NAME                      = Generic'${brand}'LoadImageLib/g' OvmfPkg/Library/GenericQemuLoadImageLib/GenericQemuLoadImageLib.inf
-sed -i 's/0x1234,\(\s*\)0x1111,/0x8086,\10x4692,/;s/0x1234,\(\s*\)0x1111,/0x8086,\10x4692,/;s/L"QEMU Standard VGA"/L"INTEL Standard VGA"/;s/L"QEMU Standard VGA (secondary)"/L"INTEL Standard VGA (secondary)"/' 'OvmfPkg/QemuVideoDxe/Driver.c'
+sed -i '/L"QEMU/{s//L"INTEL/g; s/(secondary)"/INTEL&/}' OvmfPkg/QemuVideoDxe/Driver.c
+sed -i -e '/PCI_CLASS_DISPLAY_VGA/{N;N; s/0x1234,[[:space:]]*0x1111,/0x8086,\n    0x4692,/g;}' OvmfPkg/QemuVideoDxe/Driver.c
+sed -i -e '/PCI_CLASS_DISPLAY_OTHER/{N;N; s/0x1234,[[:space:]]*0x1111,/0x8086,\n    0x4692,/g;}' OvmfPkg/QemuVideoDxe/Driver.c
+sed -i -e '/PCI_CLASS_DISPLAY_VGA/{N;N; s/0x1b36,[[:space:]]*0x0100,/0x8086,\n    0x4692,/g;}' OvmfPkg/QemuVideoDxe/Driver.c
 sed -i 's/L"QEMU Video Driver"/L"INTEL Video Driver"/;s/L"QEMU Video PCI Adapter"/L"INTEL Video PCI Adapter"/' 'OvmfPkg/QemuVideoDxe/ComponentName.c'
 echo "结束sed工作"
