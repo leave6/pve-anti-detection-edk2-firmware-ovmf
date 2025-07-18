@@ -56,4 +56,5 @@ sed -i -e '/PCI_CLASS_DISPLAY_OTHER/{N;N; s/0x1234,[[:space:]]*0x1111,/0x8086,\n
 sed -i -e '/PCI_CLASS_DISPLAY_VGA/{N;N; s/0x1b36,[[:space:]]*0x0100,/0x8086,\n    0x4692,/g;}' OvmfPkg/QemuVideoDxe/Driver.c
 sed -i 's/L"QEMU Video Driver"/L"INTEL Video Driver"/;s/L"QEMU Video PCI Adapter"/L"INTEL Video PCI Adapter"/' 'OvmfPkg/QemuVideoDxe/ComponentName.c'
 sed -i '/#define QEMU_PCI_BRIDGE_VENDOR_ID_REDHAT/{s/0x1B36/0x8086/;}' 'OvmfPkg/Include/IndustryStandard/QemuPciBridgeCapabilities.h'
+sed -i -r 's/(Pci->Hdr\.VendorId == )0x1af4/\10x8086/g' 'OvmfPkg/Library/PlatformBootManagerLib/BdsPlatform.c'
 echo "结束sed工作"
